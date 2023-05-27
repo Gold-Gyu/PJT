@@ -131,7 +131,7 @@ export default {
     deleteComment(comment) {
       axios({
         method: "delete",
-        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/delete/${comment}/`,
+        url: `http://127.0.0.1:8000/articles/comment/delete/${comment}/`,
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
@@ -145,23 +145,7 @@ export default {
     },
     updateComment(comment) {
       this.$router.push({ name : "UpdateComment", params:{comment : comment}})
-      
-      // axios({
-      //   method: "put",
-      //   url: `http://127.0.0.1:8000/articles/update/${this.article.id}/`,
-      //   data : {
-
-      //   },
-      //   headers: {
-      //     Authorization: `Bearer ${this.token}`,
-      //   },
-      // })
-      // .then(() => {
-      //   this.showComment();
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
+      this.showComment()
     },
     deleteArticle(articleid){
       

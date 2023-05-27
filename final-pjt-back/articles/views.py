@@ -27,7 +27,7 @@ def create(request):
     # 게시글을 생성하는 로직
     elif request.method == 'POST':
         serializer = ArticleListSerializer(data=request.data)
-        print(request.user)
+
         if serializer.is_valid(raise_exception=True):
             # serializer.save()
             serializer.save(user=request.user)
@@ -45,7 +45,7 @@ def detail(request, article_pk):
 @api_view(['PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def update_delete(request, article_pk):
-    print(1)
+
     articles = get_object_or_404(Article, pk=article_pk)
     if request.method == "PUT":
         serializer = ArticleListSerializer(articles, data = request.data)
@@ -62,8 +62,6 @@ def update_delete(request, article_pk):
 @permission_classes([IsAuthenticated])
 def comment_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    print(article)
-    print(request)
     if request.method == "POST":
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -78,18 +76,21 @@ def comment_create(request, article_pk):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['DELETE'])
+@api_view(['DELETE', 'PUT'])
 @permission_classes([IsAuthenticated])
-def comment_delete(request, article_pk, comment_pk):
+def comment_delete_upadate(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
-    print(request.user.review_comments)
     if comment.user_id != request.user.id:
         return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
-    print("hi")
-    
     if request.method == 'DELETE':
         comment.delete()
         return Response({'id':comment_pk}, status=status.HTTP_204_NO_CONTENT)
+    
+    elif request.method == "PUT":
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
 
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

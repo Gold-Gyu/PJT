@@ -57,10 +57,10 @@
       },
     },
     created() {
-      this.showComment();
-      console.log(this.$route.params.comment)
-      this.commentContent = this.$route.params.comment.content
-      console.log("여기",this.commentContent)
+        this.showComment();
+        console.log(this.$route.params.comment)
+        this.commentContent = this.$route.params.comment.content
+        this.articleInfo = this.$store.state.articleDetail
    
     },
     methods: {
@@ -73,21 +73,7 @@
           },
         }).then((res) => {
           this.commentList = res.data;
-        });
-      },
-      sendComment() {
-        axios({
-          method: "POST",
-          url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/create/`,
-          data: { content: this.commentText },
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        }).then((res) => {
-          console.log(res);
-          this.commentList = res.data;
-          this.showComment();
-          this.commentText = "";
+
         });
       },
       deleteComment(comment) {
@@ -105,25 +91,24 @@
             console.log(err);
           });
       },
-      updateComment(article) {
-        this.$router.push("UpdateComment")
-        console.log(article)
+      updateComment(comment) {
         axios({
-          method: "put",
-          url: `http://127.0.0.1:8000/articles/update/${this.article.id}/`,
-          data : {
-  
-          },
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        })
+        method: "PUT",
+        url: `http://127.0.0.1:8000/articles/comment/delete/${comment}/`,
+        data : {
+            content : this.commentContent
+        },
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
         .then(() => {
+            this.$router.push({name : "articleDetail"})
           this.showComment();
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
       },
       deleteArticle(articleid){
         
