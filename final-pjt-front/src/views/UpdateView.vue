@@ -1,164 +1,343 @@
 <template>
   <div class="article-page">
-    <h1 class="text">Profile</h1>
+    <div class="article-detail ">
 
-    <div class="d-flex justify-content-center align-items-center">
-  <div>
-    <b-container fluid>
-      <b-row class="my-1">
-        <b-col sm="5">
-          <label><code class="text"> ID :</code></label>
-        </b-col>
-        <b-col sm="7">
-          <b-form-input
-            type="text"
-            v-model="username"
-          ></b-form-input>
-        </b-col>
-      </b-row>
-    </b-container>
-    <b-container fluid>
-      <b-row class="my-1">
-        <b-col sm="5">
-          <label><code class="text"> Password :</code></label>
-        </b-col>
-        <b-col sm="7">
-          <b-form-input
-          type="password"
-          v-model="password"
-          ></b-form-input>
-        </b-col>
-      </b-row>
-    </b-container>
-    <b-container fluid>
-      <b-row class="my-1">
-        <b-col sm="5">
-          <label><code class="text"> New Password :</code></label>
-        </b-col>
-        <b-col sm="7">
-          <b-form-input
-            type="password"
-            v-model="new_password1"
-          ></b-form-input>
-        </b-col>
-      </b-row>
-    </b-container>
-    <b-container fluid>
-      <b-row class="my-1">
-        <b-col sm="5">
-          <label><code class="text"> New Password :</code></label>
-        </b-col>
-        <b-col sm="7">
-          <b-form-input
-            type="password"
-            v-model="new_password2"
-          ></b-form-input>
-        </b-col>
-      </b-row>
-    </b-container>
-    <button @click="changePassword" class="btn btn-primary">비밀번호 변경</button>
+    <h1 class="">Article</h1>
+    <div class="blog-post center">
+      <div class="blog-content">
+        <table class="blog-table">
+          <tr>
+            <th>제목</th>
+           
+            <td> <input type="text" v-model="article.title"> </td>
+          </tr>
+          <tr>
+            <th>내용</th>
+            <td> <textarea v-model="article.content" style="width:210px; height:200px"> </textarea></td>
+          </tr>
+          <tr>
+            <th>작성자</th>
+            <td class="author">{{ article.username }}</td>
+
+          </tr>
+        </table>
+      </div>
+      <div v-if="article.userid == userId">
+
+        <button class="submit-button" @click="updateConfirm(article.id)">수정완료</button>
+        <button class="delete-button" @click="back()">뒤로가기</button>
+
+      </div>
+    </div>
+    
+
+    
   </div>
-</div>
-
-
-    <!-- 비밀번호 변경 폼 -->
-    <!-- <form @submit.prevent="changePassword">
-      <label for="username">id:</label>
-      <input type="text" id="username" v-model="username" />
-      <label for="password">현재 비밀번호:</label>
-      <input type="password" id="password" v-model="password" />
-      <br />
-      <label for="new-password1">새로운 비밀번호:</label>
-      <input type="password" id="new-password1" v-model="new_password1" />
-      <label for="new-password2">새로운 비밀번호확인:</label>
-      <input type="password" id="new-password2" v-model="new_password2" />
-      <br />
-      <button type="submit">비밀번호 변경</button>
-    </form> -->
   </div>
+  
 </template>
 
 <script>
 import axios from "axios";
 
-// const token = this.$store.state.token
 export default {
+  name: "ArticleDetail",
   data() {
     return {
-      username: "",
-      password: "",
-      new_password1: "",
-      new_password2: "",
+      commentText: "",
+      commentList: [],
+      articleTitle1: "",
+      articleContent1: ""
     };
   },
   computed: {
+    userId() {
+      return this.$store.state.userInfo
+    },
+    article() {
+      return this.$store.state.articleDetail;
+    },
     token() {
       return this.$store.state.token;
     },
-  },
 
+  },
+  created() {
+    this.showComment();
+    console.log(this.article)
+
+  },
   methods: {
-    changePassword() {
-      const payload = {
-        username: this.username,
-        password: this.password,
-        new_password1: this.new_password1,
-        new_password2: this.new_password2,
-        // Django에서 예상되는 CSRF 토큰 필드 이름인 'csrfmiddlewaretoken'을 사용하여 전달
-      };
+    showArticle() {
       axios({
-        method: "post",
-        url: `http://127.0.0.1:8000/auth/password/change/`,
-        data: payload,
+        method: "get",
+        url: `http://127.0.0.1:8000/articles/`,
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }).then((res) => {
+        this.commentList = res.data;
+      });
+    },
+    showComment() {
+      axios({
+        method: "get",
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/create/`,
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }).then((res) => {
+        this.commentList = res.data;
+      });
+    },
+    sendComment() {
+      axios({
+        method: "POST",
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/create/`,
+        data: { content: this.commentText },
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }).then((res) => {
+        console.log(res);
+        this.commentList = res.data;
+        this.showComment();
+        this.commentText = "";
+      });
+    },
+    deleteComment(comment) {
+      axios({
+        method: "delete",
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/delete/${comment}/`,
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
       })
-        // .put("http://127.0.0.1:8000/accounts/update_password/", )
-
-        .then((response) => {
-          alert("회원정보 변경이 완료되었습니다.")
-          this.$router.push({ name : "home"})
-          console.log(response.data);
+        .then(() => {
+          this.showComment();
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((err) => {
+          console.log(err);
         });
     },
+    updateComment(article) {
+      this.$router.push("Article")
+      console.log(article)
+      axios({
+        method: "put",
+        url: `http://127.0.0.1:8000/articles/update/${this.article.id}/`,
+        data : {
+
+        },
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      })
+      .then(() => {
+        this.showComment();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    deleteArticle(articleid){
+      
+      axios({
+        method : "delete",
+        url : `http://127.0.0.1:8000/articles/update/${articleid}/`,
+        headers : {
+          Authorization : `Bearer ${this.token}`
+        }
+      })
+      .then((res) => {
+        this.$router.push("article")
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    updateConfirm(article_id){
+      axios({
+        method: "put",
+        url : `http://127.0.0.1:8000/articles/update/${article_id}/`,
+        data : {
+          title : this.article.title,
+          content : this.article.content
+        },
+        headers : {
+          Authorization : `Bearer ${this.token}`
+        }
+      })
+      .then((res) => {
+        this.$router.push({name : 'articleDetail'})
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    back() {
+
+      this.$router.push({ name : "articleDetail"})
+    }
   },
 };
 </script>
 
-<style>
-.btn-primary {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+<style scoped>
 
-.text {
-  color: aliceblue;
+.left {
+  margin-left: 8px;
 }
 .article-page {
-  background: linear-gradient(to bottom, #C6426E, #642B73);
+  /* background: linear-gradient(to bottom, #C6426E, #642B73); */
+  background: skyblue;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.justify-content-center {
-  justify-content: center;
+
+.mt {
+  margin-bottom:  30px;
 }
-.align-items-center {
-  align-content: center;
+.blog-post {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
-.text {
+.blog-content {
+  margin-bottom: 20px;
+}
+
+.blog-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.blog-table th {
+  padding: 10px;
+  text-align: left;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+.blog-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.blog-table .author {
+  color: #007bff;
+}
+
+@media screen and (max-width: 480px) {
+  .blog-table th,
+  .blog-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .blog-table th {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+.comment-input-field {
+  width: 300px;
+}
+
+.article-detail {
+  margin: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+.comment-list {
+  margin-bottom: 10px;
+}
+
+.comment-item {
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.comment-content {
+  margin: 0;
+}
+.comment-details {
+  display: flex;
+  align-items: center;
+}
+.comment-user {
+  margin: 0;
+  font-size: 12px;
+}
+
+.delete-button {
+  margin-left: 10px;
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #ff8080;
   color: white;
+  border: none;
+  border-radius: 5px;
 }
 
+.comment-input {
+  margin-bottom: 10px;
+}
+
+.submit-button {
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.article-table th,
+.article-table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.article-table th {
+  text-align: left;
+  background-color: #f2f2f2;
+}
+
+.article-table td {
+  word-break: break-word;
+}
+
+.author {
+  font-size: 12px;
+  color: #888;
+}
+.center {
+  text-align: center;
+}
 </style>

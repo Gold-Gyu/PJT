@@ -41,11 +41,9 @@ export default {
   },
   methods: {
     goDetail(article) {
-      console.log(article);
-      console.log("클릭 발생");
       this.$router.push({
         name: "articleDetail",
-        params: { article: article },
+        params: {article : article}
       });
       this.$store.dispatch("sendArticle", article);
     },

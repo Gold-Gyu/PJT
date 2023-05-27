@@ -21,8 +21,12 @@
           </tr>
         </table>
       </div>
-      <button class="submit-button" @click="updateArticle(article.articlePK)">수정</button>
-      <button class="delete-button" @click="deleteArticle(article.articlePk)">삭제</button>
+      <div v-if="article.userid == userId">
+
+        <button class="submit-button" @click="updateArticle()">수정</button>
+        <button class="delete-button" @click="deleteArticle(article.id)">삭제</button>
+
+      </div>
     </div>
     <hr />
 
@@ -34,15 +38,18 @@
         class="comment-item"
       >
       <div class="d-flex justify-content-center ">
-
+        
         <p class="comment-content" style="margin-right: 20px;">{{ comment.content }} </p>
         <p class="comment-user">작성자: {{ comment.user_username }}</p>
-        <button class="submit-button left" @click="updateComment(comment.id)">
-          UPDATE
-        </button>
-        <button class="delete-button" @click="deleteComment(comment.id)">
-          DELETE
-        </button>
+        <div v-if="comment.user_id == userId">
+
+          <button class="submit-button left" @click="updateComment(comment)">
+            UPDATE
+          </button>
+          <button class="delete-button" @click="deleteComment(comment.id)">
+            DELETE
+          </button>
+        </div>
 
       </div>
       </div>
@@ -74,10 +81,14 @@ export default {
   data() {
     return {
       commentText: "",
-      commentList: [],
+      commentList: "",
+      articleInfo : ''
     };
   },
   computed: {
+    userId() {
+      return this.$store.state.userInfo
+    },
     article() {
       return this.$store.state.articleDetail;
     },
@@ -87,12 +98,14 @@ export default {
   },
   created() {
     this.showComment();
+    this.articleInfo = this.$store.state.articleDetail;
+ 
   },
   methods: {
     showComment() {
       axios({
         method: "get",
-        url: `http://127.0.0.1:8000/articles/${this.article.articlePk}/comment/create/`,
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/create/`,
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
@@ -103,7 +116,7 @@ export default {
     sendComment() {
       axios({
         method: "POST",
-        url: `http://127.0.0.1:8000/articles/${this.article.articlePk}/comment/create/`,
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/create/`,
         data: { content: this.commentText },
         headers: {
           Authorization: `Bearer ${this.token}`,
@@ -118,7 +131,7 @@ export default {
     deleteComment(comment) {
       axios({
         method: "delete",
-        url: `http://127.0.0.1:8000/articles/${this.article.articlePk}/comment/delete/${comment}/`,
+        url: `http://127.0.0.1:8000/articles/${this.article.id}/comment/delete/${comment}/`,
         headers: {
           Authorization: `Bearer ${this.token}`,
         },
@@ -130,31 +143,31 @@ export default {
           console.log(err);
         });
     },
-    updateComment(article) {
-      this.$router.push("Article")
-      console.log(article)
-      axios({
-        method: "put",
-        url: `http://127.0.0.1:8000/articles/update/${this.article.articlePk}/`,
-        data : {
+    updateComment(comment) {
+      this.$router.push({ name : "UpdateComment", params:{comment : comment}})
+      
+      // axios({
+      //   method: "put",
+      //   url: `http://127.0.0.1:8000/articles/update/${this.article.id}/`,
+      //   data : {
 
-        },
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      })
-      .then(() => {
-        this.showComment();
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      //   },
+      //   headers: {
+      //     Authorization: `Bearer ${this.token}`,
+      //   },
+      // })
+      // .then(() => {
+      //   this.showComment();
+      // })
+      // .catch((err) => {
+      //   console.log(err)
+      // })
     },
-    deleteArticle(articlePk){
+    deleteArticle(articleid){
       
       axios({
         method : "delete",
-        url : `http://127.0.0.1:8000/articles/update/${articlePk}/`,
+        url : `http://127.0.0.1:8000/articles/update/${articleid}/`,
         headers : {
           Authorization : `Bearer ${this.token}`
         }
@@ -168,9 +181,11 @@ export default {
       })
     },
     updateArticle(){
-
+      const articleInfo = this.articleInfo
+      this.$router.push({ name: "update", params:{article : articleInfo}})
     },
   },
+
 };
 </script>
 

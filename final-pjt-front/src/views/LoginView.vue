@@ -13,7 +13,7 @@
             <h2>Sign Up</h2>
             <form id="form-signup" method="post" @submit.prevent="submitSignUp">
               
-              <div class="form-element form-stack">
+              <div class="form-element form-stack ">
                 <label for="username-signup" class="form-label">Username</label>
                 <input id="username-signup" type="text" name="username" v-model="signup.username" />
               </div>
@@ -22,15 +22,15 @@
                 <input id="password-signup" type="password" name="password" v-model="signup.password" />
               </div>
               <div class="form-element form-stack">
-                <label for="password-signup" class="form-label">Password</label>
+                <label for="password-signup" class="form-label">Password Confirm</label>
                 <input id="password-signup" type="password" name="password" v-model="signup.password2" />
               </div>
             
               <div class="form-element form-submit">
-                <button id="signUp" class="signup" type="submit" name="signup">
+                <button id="signUp" class="signup" type="submit" name="signup" >
                   Sign up
                 </button>
-                <button id="goLeft" class="signup off" @click="goLeft">Log In</button>
+                <button id="goLeft" class="signup off" @click="goLeft" @click.prevent="goLeft">Log In</button>
               </div>
             </form>
           </div>
@@ -48,12 +48,15 @@
                 <label for="password-login" class="form-label">Password</label>
                 <input id="password-login" type="password" name="password" v-model="login.password" />
               </div>
-              <div class="form-element form-submit">
-                <button id="logIn" class="login" type="submit" name="login">
+              <div class="form-element form-submit flex">
+                <button id="logIn" class="login" type="submit" name="login" @submit.prevent="submitLogin">
                   Log In
                 </button>
-                <button id="goRight" class="login off" @click="goRight">Sign Up</button>
+                <button id="goRight" class="login off" @click="goRight" @click.prevent="goRight">Sign Up</button>
               </div>
+
+                
+
             </form>
           </div>
         </div>
@@ -334,39 +337,6 @@ input {
   flex-direction: column;
 }
 
-.checkbox {
-  -webkit-appearance: none;
-  outline: none;
-	background-color: $theme-light;
-	border: 1px solid $theme-light;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-	padding: 12px;
-	border-radius: 4px;
-	display: inline-block;
-	position: relative;
-}
-.checkbox:focus, .checkbox:checked:focus,
-.checkbox:active, .checkbox:checked:active {
-  border-color: $theme-signup;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-}
-
-.checkbox:checked {
-  outline: none;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-}
-
-.checkbox:checked:after {
-  outline: none;
-	content: '\2713';
-  color: $theme-signup;
-	font-size: 1.4em;
-  font-weight: 900;
-	position: absolute;
-	top: -4px;
-	left: 4px;
-}
-
 .form-checkbox {
   display: flex;
   align-items: center;
@@ -432,7 +402,9 @@ button:focus, button:active, button:hover {
     }
   }
 }
-
+.flex {
+  display: flex;
+}
 @media only screen and (max-width: 768px) {
   #slideBox {
     width: 80%;

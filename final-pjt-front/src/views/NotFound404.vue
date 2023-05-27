@@ -22,7 +22,7 @@ export default {
 
 .not-found-title {
   font-size: 48px;
-  color: #ff5a5f;
+  color: skyblue;
   margin-bottom: 16px;
 }
 

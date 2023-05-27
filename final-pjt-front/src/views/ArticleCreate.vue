@@ -83,8 +83,8 @@ export default {
             }
             })
             .then((res) => {
-              console.log(res)
-                this.$router.push({name : 'article'})
+              console.log(res.data)
+                this.$router.push({name : 'article', params:{article:res.data}})
             })
             .catch((err) => {
                 console.log(err)

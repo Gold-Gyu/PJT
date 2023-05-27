@@ -8,7 +8,7 @@
       <div class="form-container">
         <form>
           <div class="form-group">
-            <label for="title">제목</label>
+            <label for="title">게시글 제목 : </label>
             <div class="input-group">
               <input type="text" id="title" v-model="searchTitle" class="form-control" placeholder="제목을 입력하세요">
               <button type="submit" class="btn btn-primary">검색</button>
@@ -32,7 +32,8 @@ export default {
   data() {
     return {
       searchTitle: '',
-      searchAuthor: '',  
+      searchAuthor: '',
+      articleInfo: '',
     };
   },
   computed: {
@@ -53,6 +54,10 @@ export default {
       // 예시로 라우터를 사용하여 페이지 이동하는 방식을 보여드리겠습니다.
       this.$router.push("/create");
     }
+  },
+  created() {
+    // this.articleInfo = this.$route.params.article
+    // console.log(this.articleInfo)
   }
 };
 </script>

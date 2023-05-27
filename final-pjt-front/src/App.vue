@@ -6,13 +6,10 @@
         <div class="row">
           <div class="col-12">
             <nav class="navbar navbar-expand-md navbar-light">
-              <a
-                class="nav-link"
-            
-                target="_blank"
-                ><img class="JK" src="@/assets/jk.png" alt=""
                 
-              /></a>
+                <router-link :to="{name : 'home'}">
+                    <img class="JK" src="@/assets/jk.png" alt=""/>
+                </router-link>
               <button
                 class="navbar-toggler"
                 type="button"
@@ -137,9 +134,6 @@ body{
 ::-moz-selection {
     color: #fff;
     background-color: #8167a9;
-}
-.mt {
-  margin-top: 100px;
 }
 .centered-text {
   display: flex;

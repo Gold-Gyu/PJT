@@ -19,7 +19,8 @@ export default new Vuex.Store({
     movie_list : [],
     movieDetail : [],
     articleDetail : [],
-    lastLogin: null,
+    userInfo: null,
+
   },
   getters: {
     isLogin(state) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    SAVE_USER(state, payload) {
+      state.userInfo = payload.pk
+    },
     LOGOUT(state) {
       state.token = null
       router.push({ name : "home"})
@@ -37,17 +41,13 @@ export default new Vuex.Store({
     },
     SAVE_TOKEN(state, token) {
       state.token = token
-      router.push({name : 'movieList'})
-    },
-    LOGIN_TO_MOVIELIST(state, token) {
-      state.token = token
-      router.push({name : 'movieList'})
+      router.push({name : 'home'})
     },
     SAVE_MOVIE(state, movie_list) {
       state.movie_list = movie_list
     },
     SAVE_MOVIE_DETAIL(state, payload) {
-      console.log("바로 데이터를 저장한다.")
+      
       const moviePk = payload.id
       const title = payload.title
       const overview = payload.overview
@@ -56,24 +56,22 @@ export default new Vuex.Store({
       const poster_path = payload.poster_path
       const popularity = payload.popularity
       const detailPackage = {moviePk, title,  overview, release_date, vote_average, poster_path, popularity}
-      console.log("여기는 store의 detail", detailPackage)
+
       state.movieDetail = detailPackage
-      console.log("store에 moviedetail", state.movieDetail)
+
       
     },
     SAVE_ARTICLE_DETAIL(state, payload) {
 
-      const articlePk = payload.id
+      const id = payload.id
       const title = payload.title
       const content = payload.content
+      const userid = payload.user_id
       const username = payload.user_username
       const detailArticle = {
-        articlePk, title, content, username
+        id, title, content, userid, username
       }
       state.articleDetail = detailArticle
-    },
-    UPDATE_LAST_LOGIN(state, lastLogin) {
-      state.lastLogin = lastLogin
     },
 
   },
@@ -114,7 +112,7 @@ export default new Vuex.Store({
         context.commit('SAVE_TOKEN', res.data.access)
       })
       .catch((err) => {
-        // alert("다시 입력해주세요")
+        alert("이미 존재하는 계정이거나 비밀번호가 일치하지 않습니다.")
         console.log(err)
       })
     },
@@ -129,14 +127,11 @@ export default new Vuex.Store({
         }
       })
       .then((res) => {
-        console.log(res.data.access)
-        const lastLogin = new Date()
-        context.commit('UPDATE_LAST_LOGIN', lastLogin)
-        context.commit('LOGIN_TO_MOVIELIST', res.data.access)
-        console.log(lastLogin)
+        context.commit('SAVE_TOKEN', res.data.access)
+        context.commit('SAVE_USER', res.data.user)
       })
       .catch((err) => {
-        // alert("회원정보가 없습니다. 회원가입을 해주세요!")
+        alert("로그인 정보가 틀리거나 ")
         console.log(err)
       })
     },
@@ -165,6 +160,7 @@ export default new Vuex.Store({
     sendArticle(context, payload) {
       this.commit("SAVE_ARTICLE_DETAIL", payload)
     },
+
    
   },
   modules: {
