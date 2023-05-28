@@ -18,7 +18,7 @@ class Movie(models.Model):
     popularity = models.FloatField(blank=True, null=True)
     vote_average = models.FloatField(blank=True, null=True)
     genre_ids = models.ManyToManyField(Genre, related_name='movies')
-    like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_movie')
+    like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_movie', blank=True)
     
 class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)

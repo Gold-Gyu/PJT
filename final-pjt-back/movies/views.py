@@ -39,13 +39,6 @@ from rest_framework.permissions import AllowAny
 #         movies = Movie.objects.all()
 #         serializer = MovieListSerializer(movies, many=True)
 #         return Response(serializer.data)
-
-# @api_view(["GET"])
-# def movie_detail(request, movie_pk):
-#     movies = get_object_or_404(Movie, pk=movie_pk)
-#     if request.method == "GET":
-#         serializer = MovieSerializer(movies)
-#         return Response(serializer.data)
     
 
 @api_view(["GET", "POST"])
@@ -62,11 +55,6 @@ def reviewList(request, movie_pk):
 @permission_classes([IsAuthenticated])
 def review_update_delete(request, review_pk):
     reviews = get_object_or_404(Review, pk = review_pk)
-    # movie = get_object_or_404(Movie, pk = movie_pk)
-    # if request.method == "GET":
-    #     serializer = ReviewSerializer(reviews)
-    #     return Response(serializer.data)
-    # if request.user.is_authenticated:
     if request.method == "PUT":
         serializer = ReviewSerializer(reviews, data=request.data)
         print(serializer)

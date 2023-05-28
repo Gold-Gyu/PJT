@@ -29,7 +29,7 @@
                     <a class="nav-link" href="http://localhost:8080/">Home</a>
                   </li>
                   <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                    <a class="nav-link" href="http://localhost:8080/movieList">Movie</a>
+                    <a class="nav-link" href="http://localhost:8080/movieAll">Movie</a>
                   </li>
                   
                   <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
@@ -531,7 +531,5 @@ body.dark .logo img {
     height: 50px;
 
 }
-.must {
-    width: 100% !important
-}
+
 </style>

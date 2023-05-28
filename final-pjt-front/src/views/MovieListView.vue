@@ -12,35 +12,22 @@
 import 'animate.css';
 import axios from "axios";
 import MovieListItem from '../components/MovieListItem.vue';
-import MorningView from '../components/MorningView.vue';
-import LunchView from '../components/LunchView.vue';
-import EveningView from '../components/EveningView.vue';
-import DawnView from '../components/DawnView.vue';
 
 export default {
   name: "movieList",
   components: {
     MovieListItem,
-    MorningView,
-    LunchView,
-    EveningView,
-    DawnView
   },
   data() {
     return {
       movie_list: [],
-      currentView: '' // 현재 보여지는 뷰를 저장할 데이터
     };
   },
   methods: {
-    logout() {
-      this.$store.dispatch("Logout");
-    },
+
   },
   computed: {
-    lastLogin() {
-      return this.$store.state.lastLogin;
-    }
+
   },
   created() {
     axios({

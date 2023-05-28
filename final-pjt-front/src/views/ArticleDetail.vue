@@ -75,6 +75,7 @@
 
 <script>
 import axios from "axios";
+// @import url("hover-min.css");
 
 export default {
   name: "ArticleDetail",

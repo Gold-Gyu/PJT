@@ -1,57 +1,72 @@
 <template>
-  <div class="container">
-    <div class="image-section">
-      <b-card class="imgsize" :img-src="`https://image.tmdb.org/t/p/w500/${movieDetailList.poster_path}`"></b-card>
-    </div>
-    <div class="info-section">
-      <div class="movie-info">
-        <div class="info-row">
-          <p class="info-label">제목:</p>
-          <p class="info-value">{{ movieDetailList.title }}</p>
-        </div>
-        <div class="info-row">
-          <p class="info-label">줄거리</p>
-          <p class="info-value ">{{ movieDetailList.overview }}</p>
-        </div>
-        <div class="info-row">
-          <p class="info-label">개봉일:</p>
-          <p class="info-value">{{ movieDetailList.release_date }}</p>
-        </div>
-        <div class="info-row">
-          <p class="info-label">관객수:</p>
-          <p class="info-value">{{ movieDetailList.popularity }}</p>
-        </div>
-        <div class="info-row">
-          <p class="info-label">평점:</p>
-          <p class="info-value">{{ movieDetailList.vote_average }}</p>
-        </div>
+  <div class="box">
+
+
+    <div class="container">
+      <div class="image-section">
+        <b-card class="imgsize" :img-src="`https://image.tmdb.org/t/p/w500/${movieDetailList.poster_path}`"></b-card>
       </div>
-      <div class="review-section">
-        <div class="input-wrapper">
-          <input type="text" v-model="reviewContent" placeholder="리뷰 작성" class="input-field" />
-        </div>
-        <button @click="sendToMovie" class="submit-button">등록</button>
-      </div>
-      <div class="rating-section margin-bottom">
-        <span>별점:</span>
-        <template v-for="i in 5">
-          <span
-            :key="i"
-            :class="{ active: i <= rank }"
-            @click="rank = i"
-          >★</span>
-        </template>
-      </div>
-      <ul class="review-list">
-        <li v-for="(review, index) in reviews" :key="index" class="review-item">
-          <div class="review-rating">
-            <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rank, empty: n > review.rank }">★</span>
+      <div class="info-section">
+        <div class="movie-info">
+          <div class="info-row">
+            <p class="info-label">제목:</p>
+            <p class="info-value">{{ movieDetailList.title }}</p>
           </div>
-          <div class="review-content">{{ review.content }}</div>
-          <p class="username">{{ review.username }}</p>
-          <button @click="deleteReview(review)" class="delete-button">삭제</button> 
-        </li>
-      </ul>
+          <div class="info-row">
+            <p class="info-label">줄거리</p>
+            <p class="info-value ">{{ movieDetailList.overview }}</p>
+          </div>
+          <div class="info-row">
+            <p class="info-label">개봉일:</p>
+            <p class="info-value">{{ movieDetailList.release_date }}</p>
+          </div>
+          <div class="info-row">
+            <p class="info-label">관객수:</p>
+            <p class="info-value">{{ movieDetailList.popularity }}</p>
+          </div>
+          <div class="info-row">
+            <p class="info-label">평점:</p>
+            <p class="info-value">{{ movieDetailList.vote_average }}</p>
+          </div>
+        </div>
+        <div class="review-section">
+          <div class="input-wrapper">
+            <input type="text" v-model="reviewContent" placeholder="리뷰 작성" class="input-field" />
+          </div>
+          <button @click="sendToMovie" class="submit-button">등록</button>
+        </div>
+        <div class="rating-section margin-bottom">
+          <span>별점:</span>
+          <template >
+            <span
+              v-for="i in 5"
+              :key="i"
+              :class="{ active: i <= rank }"
+              @click="rank = i"
+            >★</span>
+          </template>
+        </div>
+      </div>
+    </div>
+    <div>
+      <br>
+      <br>
+      <h1>REVIEWS</h1>
+      <hr>
+      <div class="reviewBox">
+
+        <ul class="review-list">
+          <li v-for="(review, index) in reviews" :key="index" class="review-item">
+            <div class="review-rating">
+              <span v-for="n in 5" :key="n" class="star" :class="{ filled: n <= review.rank, empty: n > review.rank }">★</span>
+            </div>
+            <div class="review-content">{{ review.content }}</div>
+            <p class="username">{{ review.username }}</p>
+            <button @click="deleteReview(review)" class="delete-button">삭제</button> 
+          </li>
+        </ul>
+
+      </div>
     </div>
   </div>
 </template>
@@ -138,7 +153,7 @@ export default {
         this.reviews = res.data;
         console.log(res.data);
       })
-      .catch((err) => {
+      .catch((err) => { 
         console.log(err)
       })
     },
@@ -157,6 +172,10 @@ export default {
 
 <style scoped>
 
+.reviewBox {
+  display: flex;
+  justify-content: center;
+}
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -164,6 +183,7 @@ export default {
   background-color: #f5f5f5;
   border-radius: 10px;
   display: flex;
+
 }
 
 .image-section {

@@ -111,7 +111,8 @@ h1 {
 }
 
 .btn-primary {
-  padding: 10px 20px;
+  padding: 8px 10px;
+  margin-left: 5px;
   font-size: 16px;
   background-color: #007bff;
   color: #fff;

@@ -1,24 +1,34 @@
 <template>
   <div class="article-page">
-    <h1>Movie Detail</h1>
-    <movie-detail-item/>
+    <div>
+      <h1>Movie Detail</h1>
+      <movie-detail-item/>
+      <MovieReview/>
+    </div>
+
   </div>
 </template>
 
 <script>
 import MovieDetailItem from "@/components/MovieDetailItem.vue";
-// import MovieDetailItem from '../components/MovieDetailItem.vue';
+import MovieReview from '../components/MovieReview.vue';
 export default {
   name : "MovieDetail",
   components : {
-    MovieDetailItem
+    MovieDetailItem,
+    MovieReview
   }
 }
 </script>
 
-<style>
-/* .article-page {
-  background: linear-gradient(to bottom, #C6426E, #642B73); */
+<style scoped>
+.article-page {
+  background: skyblue;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+}
 
-/* } */
 </style>

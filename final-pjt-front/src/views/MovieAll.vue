@@ -1,8 +1,104 @@
 <template>
   <div class="back-page">
-    <carousel :navigation-enabled="true" :per-page-custom="[[320, 1], [480, 2], [720, 3], [960, 4]]" :autoplay="true" :autoplay-timeout="3000" :loop="true">
-      <slide v-for="(movie, index) in movies_list" :key="movie.id" :style="slideStyle(index)">
-        <img :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`" :alt="movie.title"  @click="goToDetail(movie)"/>
+    <div>
+      <b-card no-body class="boxList">
+        <b-tabs card class="innerBox">
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-action">Action</button>
+            </template>
+            <b-card-text>
+              <ActionMovie></ActionMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-adventure">
+                Adventure
+              </button>
+            </template>
+            <b-card-text>
+              <AdventureMovie></AdventureMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-fantasy">Fantasy</button>
+            </template>
+            <b-card-text>
+              <FantasyMovie></FantasyMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-animation">
+                Animation
+              </button>
+            </template>
+            <b-card-text>
+              <AnimationMovie></AnimationMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-horror">Horror</button>
+            </template>
+            <b-card-text>
+              <HorrorMovie></HorrorMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-comedy">Comedy</button>
+            </template>
+            <b-card-text>
+              <ComedyMovie></ComedyMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-thriller">Thriller</button>
+            </template>
+            <b-card-text>
+              <ThrillerMovie></ThrillerMovie>
+            </b-card-text>
+          </b-tab>
+          <b-tab title="Action" active>
+            <template v-slot:title>
+              <button class="genreButton genreButton-romance">Romance</button>
+            </template>
+            <b-card-text>
+              <RomanceMovie></RomanceMovie>
+            </b-card-text>
+          </b-tab>
+        </b-tabs>
+      </b-card>
+    </div>
+    <div class="genreBox"></div>
+    <carousel
+      :navigation-enabled="true"
+      :per-page-custom="[
+        [320, 1],
+        [480, 2],
+        [720, 3],
+        [960, 4],
+      ]"
+      :autoplay="true"
+      :autoplay-timeout="3000"
+      :show-navigation="true"
+      :custom-dots="false"
+    >
+      <slide
+        v-for="(movie, index) in movies_list"
+        :key="movie.id"
+        :style="slideStyle(index)"
+      >
+        <img
+          :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+          :alt="movie.title"
+          @click="goToDetail(movie)"
+          class="carousel-image"
+        />
         <div class="slide-title">{{ movie.title }}</div>
       </slide>
     </carousel>
@@ -10,12 +106,27 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel';
-
+import { Carousel, Slide } from "vue-carousel";
+import ActionMovie from "@/components/ActionMovie.vue";
+import AdventureMovie from "@/components/AdventureMovie.vue";
+import FantasyMovie from "@/components/FantasyMovie.vue";
+import AnimationMovie from "@/components/AnimationMovie.vue";
+import HorrorMovie from "@/components/HorrorMovie.vue";
+import ComedyMovie from "@/components/ComedyMovie.vue";
+import ThrillerMovie from "@/components/ThrillerMovie.vue";
+import RomanceMovie from "@/components/RomanceMovie.vue";
 export default {
   components: {
     Carousel,
     Slide,
+    ActionMovie,
+    AdventureMovie,
+    FantasyMovie,
+    AnimationMovie,
+    HorrorMovie,
+    ComedyMovie,
+    ThrillerMovie,
+    RomanceMovie,
   },
   computed: {
     movies_list() {
@@ -23,29 +134,91 @@ export default {
     },
   },
   methods: {
+    getButton(title) {
+      return `<button class="genreButton genreButton-action">${title}</button>`;
+    },
     goToDetail(movie_list) {
-      
       this.$router.push({
-        name: 'detail',
-      })
-      this.$store.dispatch("sendDetail", movie_list)
+        name: "detail",
+      });
+      this.$store.dispatch("sendDetail", movie_list);
     },
     slideStyle(index) {
       if (index < this.movies_list.length - 1) {
-        return { marginRight: '10px' };
+        return { marginRight: "10px" };
       }
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-/* .dawn-view {
-  background-color: #221f1f; 
-  padding: 30px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-} */
+
+.boxList{
+  
+}
+.innerBox {
+  background: lightseagreen;
+}
+.nobody {
+  display: flex;
+  justify-content: center;
+}
+.genreBox {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  margin-bottom: 10px;
+  
+}
+.genreButton {
+  background: lightseagreen;
+  margin: 5px;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.genreButton-action {
+  background-color: #00aaff; /* 하늘색과 조화되는 배경색 */
+}
+
+.genreButton-adventure {
+  background-color: #ffaa00; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-fantasy {
+  background-color: #55dd55; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-animation {
+  background-color: #ff55aa; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-horror {
+  background-color: #aa00aa; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-comedy {
+  background-color: #ffaa55; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-thriller {
+  background-color: #dd00dd; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton-romance {
+  background-color: #aa55ff; /* 다른 색상으로 변경 가능 */
+}
+
+.genreButton:hover {
+  opacity: 0.8;
+}
 
 .carousel {
   display: flex;
@@ -55,69 +228,32 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 캐러셀 슬라이드 스타일 */
 .slide {
   scroll-snap-align: start;
   flex: 0 0 auto;
   width: 80%;
-  /* 슬라이드의 너비 조절 */
   margin-right: 1rem;
-  /* 슬라이드 간 간격 설정 */
 }
 
-/* 캐러셀 이미지 스타일 */
 .slide img {
   width: 100%;
-  height: auto;
+  max-height: 200px;
+  object-fit: cover;
 }
 
-/* 캐러셀 타이틀 스타일 */
-.slide div {
+.slide-title {
   text-align: center;
   font-weight: bold;
   margin-top: 0.5rem;
-}
-
-/* 캐러셀 네비게이션 버튼 스타일 */
-.carousel-navigation button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2rem;
-  outline: none;
-  padding: 0.5rem;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.carousel-navigation button.prev {
-  left: 0;
-}
-
-.carousel-navigation button.next {
-  right: 0;
+  width: 100%;
 }
 
 .back-page {
-  background: linear-gradient(to bottom, #C6426E, #642B73);
+  background: skyblue;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
   padding: 30px;
   font-family: Arial, sans-serif;
-}
-.justify-content-center {
-  justify-content: center;
-}
-.align-items-center {
-  align-content: center;
-}
-
-.slide-title{
-  text-align: center;
-  font-weight: bold;
-  margin-top: 0.5rem;
-  width: 100%;
 }
 </style>
