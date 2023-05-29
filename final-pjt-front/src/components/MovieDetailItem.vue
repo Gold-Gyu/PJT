@@ -1,10 +1,21 @@
 <template>
   <div class="box">
-
-
     <div class="container">
       <div class="image-section">
         <b-card class="imgsize" :img-src="`https://image.tmdb.org/t/p/w500/${movieDetailList.poster_path}`"></b-card>
+        <div class="movieBtn">
+          <div>
+            <p>좋아요 개수: {{ like.length }}</p>
+          </div>
+        </div>
+        <div class="movieBtn">
+          <button class="movieLike" @click="movieLike(movieDetailList)"
+          v-if="like.includes(user)"
+          >좋아요 취소</button>
+          <button class="movieLike" @click="movieLike(movieDetailList)"
+          v-else
+          >좋아요</button>
+        </div>
       </div>
       <div class="info-section">
         <div class="movie-info">
@@ -46,6 +57,13 @@
             >★</span>
           </template>
         </div>
+        <div class="backBtn">
+          <button 
+          class="btn-primary"
+          @click="goMovieAll">
+          뒤로가기
+        </button>
+        </div>
       </div>
     </div>
     <div>
@@ -82,6 +100,7 @@ export default {
       reviewContent: "",
       rank: 0,
       reviews: null,
+      like : ""
     };
   },
   computed: {
@@ -91,8 +110,31 @@ export default {
     token() {
       return this.$store.state.token;
     },
+    user(){
+      return this.$store.state.userInfo
+    }
   },
   methods: {
+    goMovieAll() {
+      this.$router.push({name: "movieAll"})
+    },
+    movieLike(movie){
+      axios({
+        method: "POST",
+        url : `http://127.0.0.1:8000/movies/like/${movie.moviePk}/`,
+        headers : {
+          Authorization : `Bearer ${this.token}`
+        }
+      })
+      .then((res) => {
+        this.like = res.data.like
+        console.log("성공", res)
+        this.$store.dispatch("likeList", res.data.like)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     deleteReview(review){
       axios({
         method : "delete",
@@ -159,6 +201,7 @@ export default {
     },
   },
   created() {
+    this.like = this.$store.state.likeList
     axios({
       method: "GET",
       url: `http://127.0.0.1:8000/movies/reviews/${this.movieDetailList.moviePk}/`,
@@ -171,6 +214,35 @@ export default {
 </script>
 
 <style scoped>
+
+.goMovieAllBtn{
+  border: 2px solid black;
+  border-radius: 10%;
+  background : skyblue;
+  color : white;
+}
+.backBtn{
+  display: flex;
+  justify-content: right;
+
+}
+
+.movieBtn{
+  display: flex;
+  justify-content: center;
+}
+
+.movieLike{
+
+
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+
+}
 
 .reviewBox {
   display: flex;

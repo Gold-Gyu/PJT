@@ -92,6 +92,13 @@ def comment_delete_upadate(request, comment_pk):
             serializer.save()
             return Response(serializer.data)
 
+# 커뮤니티 좋아요
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def articleLike(request, article_pk):
+#     like = get_object_or_404(Article, pk=article_pk)
+
+
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 # def like(request, article_pk):

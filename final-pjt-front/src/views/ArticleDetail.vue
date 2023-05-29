@@ -21,10 +21,18 @@
           </tr>
         </table>
       </div>
-      <div v-if="article.userid == userId">
+      <div v-if="article.userid == userId" class="checkBox">
 
-        <button class="submit-button" @click="updateArticle()">수정</button>
-        <button class="delete-button" @click="deleteArticle(article.id)">삭제</button>
+        <div class="unvisible">
+
+        </div>
+        <div class="center">
+          <button class="submit-button" @click="updateArticle()">수정</button>
+          <button class="delete-button" @click="deleteArticle(article.id)">삭제</button>
+        </div>
+        <div class="right">
+          <button class="like-button" @click="likeArticle(article.id)">좋아요</button>
+        </div>
 
       </div>
     </div>
@@ -58,7 +66,7 @@
 
     <h1>Comment 작성하기</h1>
     <div class="comment-input" style="display: flex; justify-content: center">
-      <!-- <label for="input-with-list">comment를 작성하세요</label> -->
+     
       <b-form-input
         placeholder="Comment를 입력하세요."
         list="input-list"
@@ -169,6 +177,9 @@ export default {
       const articleInfo = this.articleInfo
       this.$router.push({ name: "update", params:{article : articleInfo}})
     },
+    likeArticle(article_id){
+      console.log(article_id)
+    }
   },
 
 };
@@ -188,9 +199,6 @@ export default {
   justify-content: center;
 }
 
-.mt {
-  margin-bottom:  30px;
-}
 .blog-post {
   max-width: 800px;
   margin: 0 auto;
@@ -284,6 +292,30 @@ p {
   font-size: 14px;
   padding: 5px 10px;
   background-color: #ff8080;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.checkBox{
+  display: flex;
+  justify-content: space-between;
+}
+
+.unvisible{
+  width: 60px;
+}
+.right{
+  display: flex;
+  justify-content: right;
+}
+
+.like-button{
+  justify-content: right;
+  margin-left: 10px;
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: red;
   color: white;
   border: none;
   border-radius: 5px;

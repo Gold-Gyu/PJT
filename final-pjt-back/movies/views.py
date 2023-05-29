@@ -78,7 +78,7 @@ def createReview(request, movie_pk):
     # 지금까지 적힌 모든 review를 다보여주는 로직
     if request.method == "GET":
         reviews = movie.review_set.all()
-        # reviews = movie.review_set.get(pk= movie_pk)
+
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data)
     
@@ -90,37 +90,16 @@ def createReview(request, movie_pk):
             serializer.save(movie=movie, user=request.user)
             print("save")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-# 데이터 뽑기 위한 로직
-
-@api_view(["POST"])
-def MovieCreate(request):
-    # print(request.data)
-    if request.method == "POST":
-        serializer = Movie_List_Serializer(data=request.data,many=True)
-        # print(serializer)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 
-# 무비리스트를 보내주는 로직       
-def ServerToClient(request):
+# 무비리스트를 보내주는 로직
+@api_view(["GET"])       
+def movie_list(request):
     movies = Movie.objects.all()
-    # print(movies)
-    movie_list = []
-    for movie in movies:
-        movie_data = {
-            "id" : movie.pk,
-            'title': movie.title,
-            'overview': movie.overview,
-            'release_date': str(movie.release_date),
-            'poster_path': movie.poster_path,
-            'popularity': movie.popularity,
-            'vote_average': movie.vote_average
-        }
-        movie_list.append(movie_data)
-    return JsonResponse(movie_list, safe=False)
+    if request.method == "GET":
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 # 무비의 디테일 요소를 보여주는 로직
 @api_view(['GET'])
@@ -165,12 +144,13 @@ def genres(request, genre_id):
 # 영화 좋아요
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def like(request, movie_pk):
-    print("hi")
+def movieLike(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
+    user = request.user
     if request.user in movie.like.all():
-        movie.like.remove(request.user)
+        movie.like.remove(user)
     else:
-        movie.like.add(request.user)
+        movie.like.add(user)
     serializer = MovieDetailSerializer(movie)
     return Response(serializer.data)
+

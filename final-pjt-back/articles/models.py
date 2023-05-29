@@ -8,6 +8,7 @@ class Article(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    articleLike = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_article', blank=True)
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

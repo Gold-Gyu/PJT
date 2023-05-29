@@ -74,39 +74,11 @@
         </b-tabs>
       </b-card>
     </div>
-    <div class="genreBox"></div>
-    <carousel
-      :navigation-enabled="true"
-      :per-page-custom="[
-        [320, 1],
-        [480, 2],
-        [720, 3],
-        [960, 4],
-      ]"
-      :autoplay="true"
-      :autoplay-timeout="3000"
-      :show-navigation="true"
-      :custom-dots="false"
-    >
-      <slide
-        v-for="(movie, index) in movies_list"
-        :key="movie.id"
-        :style="slideStyle(index)"
-      >
-        <img
-          :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-          :alt="movie.title"
-          @click="goToDetail(movie)"
-          class="carousel-image"
-        />
-        <div class="slide-title">{{ movie.title }}</div>
-      </slide>
-    </carousel>
   </div>
 </template>
 
 <script>
-import { Carousel, Slide } from "vue-carousel";
+// import { Carousel, Slide } from "vue-carousel";
 import ActionMovie from "@/components/ActionMovie.vue";
 import AdventureMovie from "@/components/AdventureMovie.vue";
 import FantasyMovie from "@/components/FantasyMovie.vue";
@@ -117,8 +89,8 @@ import ThrillerMovie from "@/components/ThrillerMovie.vue";
 import RomanceMovie from "@/components/RomanceMovie.vue";
 export default {
   components: {
-    Carousel,
-    Slide,
+    // Carousel,
+    // Slide,
     ActionMovie,
     AdventureMovie,
     FantasyMovie,

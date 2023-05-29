@@ -20,7 +20,7 @@ export default new Vuex.Store({
     movieDetail : [],
     articleDetail : [],
     userInfo: null,
-
+    likeList: "",
   },
   getters: {
     isLogin(state) {
@@ -28,6 +28,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    SAVE_LIKELIST(state,payload) {
+      state.likeList = payload
+    },
     SAVE_USER(state, payload) {
       state.userInfo = payload.pk
     },
@@ -55,7 +58,9 @@ export default new Vuex.Store({
       const vote_average = payload.vote_average
       const poster_path = payload.poster_path
       const popularity = payload.popularity
-      const detailPackage = {moviePk, title,  overview, release_date, vote_average, poster_path, popularity}
+      const like = payload.like
+      const detailPackage = {moviePk, title,  overview, release_date, vote_average, poster_path, popularity, like}
+      // const detailPackage = {payload}
 
       state.movieDetail = detailPackage
 
@@ -76,6 +81,9 @@ export default new Vuex.Store({
 
   },
   actions: {
+    likeList(context, payload) {
+      context.commit("SAVE_LIKELIST", payload)
+    },
     Logout(context) {
       console.log(context)
       context.commit("LOGOUT")
@@ -127,8 +135,9 @@ export default new Vuex.Store({
         }
       })
       .then((res) => {
+        console.log(res.data.user)
         context.commit('SAVE_TOKEN', res.data.access)
-        context.commit('SAVE_USER', res.data.user)
+        context.commit('SAVE_USER', res.data.user.pk)
       })
       .catch((err) => {
         alert("로그인 정보가 틀리거나 ")
@@ -154,7 +163,7 @@ export default new Vuex.Store({
       this.commit("SAVE_MOVIE", movie_list)
     },
     sendDetail(context, payload){
-      // console.log("this is store",payload)
+      console.log("this is store",payload)
       this.commit("SAVE_MOVIE_DETAIL", payload)
     },
     sendArticle(context, payload) {
