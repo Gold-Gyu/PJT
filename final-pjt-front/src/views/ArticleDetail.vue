@@ -40,6 +40,7 @@
 
     <h1>Comment</h1>
     <div class="comment-list">
+      <p>댓글 개수 : {{ commentList.length }}</p>
       <div
         v-for="comment in commentList"
         :key="comment.id"
@@ -92,6 +93,7 @@ export default {
       commentText: "",
       commentList: "",
       articleInfo : ''
+      
     };
   },
   computed: {

@@ -92,6 +92,17 @@ def comment_delete_upadate(request, comment_pk):
             serializer.save()
             return Response(serializer.data)
 
+
+# 코멘트 개수를 가져오는 로직
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def comment_count(request, article_pk):
+    commentQ = Comment.objects.filter(article=article_pk)
+    serializer = CommentSerializer(commentQ, many=True)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
 # 커뮤니티 좋아요
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

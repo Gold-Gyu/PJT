@@ -108,7 +108,7 @@ def movie_detail(request, movie_pk):
     if request.method == "GET":
         serialzer = Movie_List_Serializer(movie)
         # print(serialzer.data)
-        return Response(serialzer.data)
+        return Response(serialzer.data, status=status.HTTP_201_CREATED)
     
 
 @api_view(['POST'])
@@ -121,7 +121,7 @@ def like(request, movie_pk):
     else:
         movie.like.add(request.user)
     serializer = MovieDetailSerializer(movie)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 장르 아이디, 이름을 배열로 반환
 @api_view(['GET'])
@@ -129,7 +129,7 @@ def like(request, movie_pk):
 def genre_ids(request):
     genres = Genre.objects.all()
     serializer = GenreListSerializer(genres, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 장르 아이디를 받아서 해당 장르의 영화리스트 반환
 @api_view(['GET'])
@@ -139,7 +139,7 @@ def genres(request, genre_id):
     movies = genre.movies.all()
     print(movies)
     serializer = MovieListSerializer(movies, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 영화 좋아요
 @api_view(['POST'])
@@ -152,5 +152,5 @@ def movieLike(request, movie_pk):
     else:
         movie.like.add(user)
     serializer = MovieDetailSerializer(movie)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
