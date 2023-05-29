@@ -32,7 +32,9 @@ export default new Vuex.Store({
       state.likeList = payload
     },
     SAVE_USER(state, payload) {
-      state.userInfo = payload.pk
+      console.log(payload)
+      state.userInfo = payload
+      console.log(state.userInfo)
     },
     LOGOUT(state) {
       state.token = null
