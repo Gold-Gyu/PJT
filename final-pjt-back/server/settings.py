@@ -143,11 +143,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'accounts.User'
+
 CORS_ALLOWED_ORIGINS = ['http://localhost:8080']
 
 SITE_ID = 1
 
+# 로그인
+
+AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : ['dj_rest_auth.jwt_auth.JWTCookieAuthentication'],
     "DEFAULT_PERMISSION_CLASSES" : ['rest_framework.permissions.AllowAny']
