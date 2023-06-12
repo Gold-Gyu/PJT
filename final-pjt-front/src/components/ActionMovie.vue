@@ -44,9 +44,9 @@
       axios({
         method: "get",
         url: `http://127.0.0.1:8000/movies/genres/28/`,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${this.token}`,
+        // },
       })
         .then((res) => {
           this.movieList = res.data;

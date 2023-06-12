@@ -10,11 +10,15 @@
         </div>
         <div class="movieBtn">
           <button class="movieLike" @click="movieLike(movieDetailList)"
-          v-if="like.includes(user)"
-          >좋아요 취소</button>
+          v-if="like.includes(user.pk)"
+          >좋아요 취소
+
+        </button>
           <button class="movieLike" @click="movieLike(movieDetailList)"
           v-else
-          >좋아요</button>
+          >좋아요
+ 
+        </button>
         </div>
       </div>
       <div class="info-section">
@@ -72,7 +76,6 @@
       <h1>REVIEWS</h1>
       <hr>
       <div class="reviewBox">
-
         <ul class="review-list">
           <li v-for="(review, index) in reviews" :key="index" class="review-item">
             <div class="review-rating">
@@ -100,7 +103,9 @@ export default {
       reviewContent: "",
       rank: 0,
       reviews: null,
-      like : ""
+      like : "",
+      userId : "",
+      userLike : "",
     };
   },
   computed: {
@@ -112,6 +117,7 @@ export default {
     },
     user(){
       return this.$store.state.userInfo
+      
     }
   },
   methods: {
@@ -128,10 +134,11 @@ export default {
       })
       .then((res) => {
         this.like = res.data.like
-        console.log("성공", res)
+        console.log("좋아요 성공", this.like)
         this.$store.dispatch("likeList", res.data.like)
       })
       .catch((err) => {
+        alert("로그인을해주세요")
         console.log(err)
       })
     },
@@ -183,6 +190,7 @@ export default {
           this.createReview();
         })
         .catch(() => {
+          alert("로그인을 진행해주세요")
           console.log(this.token);
         });
     },

@@ -120,6 +120,7 @@ export default new Vuex.Store({
       .then((res) => {
         // console.log(res.data)
         context.commit('SAVE_TOKEN', res.data.access)
+        context.commit('SAVE_USER', res.data.user)
       })
       .catch((err) => {
         alert("이미 존재하는 계정이거나 비밀번호가 일치하지 않습니다.")
@@ -138,8 +139,9 @@ export default new Vuex.Store({
       })
       .then((res) => {
         console.log(res.data.user)
+        console.log(res.data)
         context.commit('SAVE_TOKEN', res.data.access)
-        context.commit('SAVE_USER', res.data.user.pk)
+        context.commit('SAVE_USER', res.data.user)
       })
       .catch((err) => {
         alert("로그인 정보가 틀리거나 ")

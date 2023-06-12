@@ -21,7 +21,7 @@
           </tr>
         </table>
       </div>
-      <div v-if="article.userid == userId" class="checkBox">
+      <div v-if="article.userid == userId.pk" class="checkBox">
 
         <div class="unvisible">
 
@@ -50,7 +50,8 @@
         
         <p class="comment-content" style="margin-right: 20px;">{{ comment.content }} </p>
         <p class="comment-user">작성자: {{ comment.user_username }}</p>
-        <div v-if="comment.user_id == userId">
+        <!-- <p class="comment-user">{{ comment.created_at }}</p> -->
+        <div v-if="comment.user_id == userId.pk">
 
           <button class="submit-button left" @click="updateComment(comment)">
             UPDATE

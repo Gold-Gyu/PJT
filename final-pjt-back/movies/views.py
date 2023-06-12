@@ -15,36 +15,12 @@ from rest_framework.permissions import AllowAny
 
 
 
-# Create your views here.
-
-# 전체 목록 조회하기
-# @api_view(['GET'])
-# def actor_list(request):
-#     if request.method == "GET":
-#         actors = Actor.objects.all()
-#         # print(actors)
-#         serializer = ActorListSerializer(actors, many=True)
-#         return Response(serializer.data)
-    
-# @api_view(['GET'])
-# def actor_detail(request, actor_pk):
-#     actors = get_object_or_404(Actor, pk = actor_pk)
-#     if request.method == "GET":
-#         serializer = ActorSerializer(actors)
-#         return Response(serializer.data)
-    
-# @api_view(['GET'])
-# def movie_list(request):
-#     if request.method == "GET":
-#         movies = Movie.objects.all()
-#         serializer = MovieListSerializer(movies, many=True)
-#         return Response(serializer.data)
-    
+# Create your views here.    
 
 @api_view(["GET", "POST"])
 def reviewList(request, movie_pk):
     if request.method == "GET":
-        reviews = Review.objects.filter(movie=movie_pk)
+        reviews = Review.objects.filter(movie=movie_pk).order_by('-id')
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data)
     
@@ -137,7 +113,6 @@ def genre_ids(request):
 def genres(request, genre_id):
     genre = get_object_or_404(Genre, pk=genre_id)
     movies = genre.movies.all()
-    print(movies)
     serializer = MovieListSerializer(movies, many=True)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 

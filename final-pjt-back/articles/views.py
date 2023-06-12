@@ -17,7 +17,7 @@ from .models import Article, Comment
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def create(request):
-
+ 
     # pk값 내림차순으로 정렬하는 로직
     if request.method == 'GET':
         articles = get_list_or_404(Article.objects.order_by('-id'))

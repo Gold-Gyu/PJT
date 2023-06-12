@@ -14,7 +14,7 @@
             <p class="comment-user">작성자: {{ commentInfo.user_username }}</p>
 
             
-            <div v-if="commentInfo.user_id == userId">
+            <div v-if="commentInfo.user_id == userId.pk">
               <button
                 class="submit-button left"
                 @click="updateComment(commentInfo.id)"

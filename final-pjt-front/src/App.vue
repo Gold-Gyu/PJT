@@ -36,11 +36,12 @@
                     <a class="nav-link" href="http://localhost:8080/article">Community</a>
                   </li>
                   <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                    <a v-if="isLogin" class="nav-link" href="" @click="goLogout">Logout</a>
-                    <a v-else class="nav-link" href="http://localhost:8080/login">Login</a>
+                    <a v-if="isLogin" class="nav-link" href="http://localhost:8080/profile">profile</a>
                   </li>
                   <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                    <a v-if="isLogin" class="nav-link" href="http://localhost:8080/update">profile</a>
+                    <a v-if="isLogin" class="nav-link" href="" @click="goLogout">로그아웃</a>
+                    <a v-else class="nav-link" href="http://localhost:8080/login">로그인</a>
+                    <a v-if="isLogin" class="nav-link" href="" @click="deleteUser">회원탈퇴</a>
                   </li>
                 </ul>
               </div>
@@ -60,7 +61,7 @@
 
 <script>
 import 'animate.css';
-
+import axios from 'axios'
 export default {
   name: "app",
   components: {
@@ -93,6 +94,23 @@ export default {
       });
     }
     },
+    deleteUser(){
+        axios({
+            method : "delete",
+            url : `http://127.0.0.1:8000/accounts/delete/`,
+            headers : {
+                Authorization : `Bearer ${this.$store.state.token}`
+            }
+        })
+        .then((res) => {
+            this.goLogout()
+            this.$router.push("home")
+            console.log("회원탈퇴성공", res)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
   },
   computed: {
     isLogin() {
