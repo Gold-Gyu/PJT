@@ -13,8 +13,7 @@
                   <span></span><br />
                   <span>T</span
                   ><span>O</span> <span></span><br />
-                  <span>R</span><span>e</span><span>a</span><span>l</span><span></span><br />
-                  <span>W</span><span>O</span><span>R</span><span>L</span><span>D</span>
+                  <span>M</span><span>O</span><span>V</span><span>l</span><span>E</span><span>W</span><br />
                 </h1>
               </div>
             </div>
