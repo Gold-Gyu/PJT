@@ -6,7 +6,6 @@
         <div class="movieBtn">
           <div>
             <p>좋아요 개수: {{ like.length }}</p>
-            <p>{{ like }}</p>
           </div>
         </div>
         <div class="movieBtn">
