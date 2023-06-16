@@ -46,7 +46,6 @@ def review_update_delete(request, review_pk):
     
     
 @api_view(["GET", "POST"])
-# @authentication_classes([SessionAuthentication])  # 인증 클래스 설정
 @permission_classes([IsAuthenticated])  # 권한 설정
 def createReview(request, movie_pk):
     movie = get_object_or_404(Movie, pk = movie_pk)

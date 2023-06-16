@@ -23,16 +23,12 @@
       </div>
       <div v-if="article.userid == userId.pk" class="checkBox">
 
-        <div class="unvisible">
 
-        </div>
         <div class="center">
           <button class="submit-button" @click="updateArticle()">수정</button>
           <button class="delete-button" @click="deleteArticle(article.id)">삭제</button>
         </div>
-        <div class="right">
-          <button class="like-button" @click="likeArticle(article.id)">좋아요</button>
-        </div>
+      
 
       </div>
     </div>
@@ -302,7 +298,7 @@ p {
 
 .checkBox{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .unvisible{

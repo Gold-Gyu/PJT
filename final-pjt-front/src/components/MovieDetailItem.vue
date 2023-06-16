@@ -6,6 +6,7 @@
         <div class="movieBtn">
           <div>
             <p>좋아요 개수: {{ like.length }}</p>
+            <p>{{ like }}</p>
           </div>
         </div>
         <div class="movieBtn">
@@ -17,7 +18,7 @@
           <button class="movieLike" @click="movieLike(movieDetailList)"
           v-else
           >좋아요
- 
+  
         </button>
         </div>
       </div>
@@ -134,8 +135,7 @@ export default {
       })
       .then((res) => {
         this.like = res.data.like
-        console.log("좋아요 성공", this.like)
-        this.$store.dispatch("likeList", res.data.like)
+
       })
       .catch((err) => {
         alert("로그인을해주세요")
@@ -209,7 +209,7 @@ export default {
     },
   },
   created() {
-    this.like = this.$store.state.likeList
+   
     axios({
       method: "GET",
       url: `http://127.0.0.1:8000/movies/reviews/${this.movieDetailList.moviePk}/`,
