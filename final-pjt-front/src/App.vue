@@ -41,6 +41,8 @@
                   <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                     <a v-if="isLogin" class="nav-link" href="" @click="goLogout">로그아웃</a>
                     <a v-else class="nav-link" href="http://localhost:8080/login">로그인</a>
+                  </li>
+                  <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                     <a v-if="isLogin" class="nav-link" href="" @click="deleteUser">회원탈퇴</a>
                   </li>
                 </ul>
